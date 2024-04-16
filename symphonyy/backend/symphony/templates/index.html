@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Streaming Service</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}" />
+</head>
+<body style="margin:0; padding:0; background:#121212; font-family:Arial, sans-serif; color:#fff;">
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <!-- Spotify Logo -->
+        <div class="logo-container">
+            <img src="https://storage.googleapis.com/pr-newsroom-wp/1/2018/11/Spotify_Logo_RGB_Green.png" alt="Symphony Logo" style="width: 100%; height: auto; padding: 20px; box-sizing: border-box;">
+        </div>
+
+        <!-- Welcome User -->
+        <div class="sidebar-section">
+            <span style="margin-left: 14px;" class="sidebar-link-icon">👤</span>
+            <b>Welcome, {{user.username}}</b>
+            <br>
+            <br>
+
+            <a href="/logout">
+                <span class="sidebar-link-icon">↪️</span>
+                <b>Logout</b>
+            </a>
+        </div>
+
+        <!-- Navigation Links -->
+        <div class="sidebar-section">
+            <a href="/" class="sidebar-link active">
+                <span class="sidebar-link-icon">🏠</span>
+                Home
+            </a>
+            <a href="/search" class="sidebar-link">
+                <span class="sidebar-link-icon">🔍</span>
+                Search
+            </a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div style="margin-left:240px; padding:20px;">
+        <!-- Search Bar -->
+        <header class="header-container">
+            <form action="search" method="POST">
+                {% csrf_token %}
+                <div class="search-bar" style="width: 390px;">
+                    <input type="search" name="search_query" placeholder="What do you want to listen to?" aria-label="Search">
+                    <button type="submit" aria-label="Search">🔍</button>
+                </div>
+            </form>
+            <div class="search-title">Top Artists</div>
+        </header>
+
+        <!-- Top Artists Section -->
+        <main style="padding-top:20px;">
+            <section style=" margin-top:0px; padding:0px; overflow-x:auto; white-space:nowrap;">
+                <!-- Artist Card -->
+                {% for artist in top_artists %}
+                <div class="artist-card">
+                    <a href="/profile/{{artist.id}}" style="text-decoration: none;">
+                        <img src="{{artist.image_url}}" alt="{{artist.name}}" style="width:150px; height:150px; border-radius:50%;">
+                        <div class="artist-info">
+                            <div class="artist-name">{{artist.name}}</div>
+                            <div class="artist-title">Artist</div>
+                        </div>
+                    </a>
+                </div>
+                {% endfor %}
+            </section>
+
+            <!-- Top Songs Section -->
+            <section>
+                <div class="search-title">Top Songs</div>
+                <!-- Song Card -->
+                {% for song in top_songs %}
+                <div class="song-card">
+                    <a href="/song/{{song.id}}" style="text-decoration: none;">
+                        <img src="{{song.cover_url}}" alt="{{song.title}}" style="width:150px; height:150px;">
+                        <div class="song-info">
+                            <div class="song-title">{{song.title}}</div>
+                            <div class="song-artist">{{song.artist}}</div>
+                        </div>
+                    </a>
+                </div>
+                {% endfor %}
+            </section>
+
+            <!-- Browse All Section -->
+            <section>
+                <div class="browse-all-title">Browse All Songs</div>
+                <!-- Browse All Song Card -->
+                {% for song in browse_all_songs %}
+                <div class="song-card">
+                    <a href="/song/{{song.id}}" style="text-decoration: none;">
+                        <img src="{{song.cover_url}}" alt="{{song.title}}" style="width:150px; height:150px;">
+                        <div class="song-info">
+                            <div class="song-title">{{song.title}}</div>
+                            <div class="song-artist">{{song.artist}}</div>
+                        </div>
+                    </a>
+                </div>
+                {% endfor %}
+            </section>
+        </main>
+    </div>
+</body>
+</html>
